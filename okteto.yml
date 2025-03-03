@@ -5,7 +5,7 @@ build:
 
 deploy: 
   commands: 
-  - kubectl delete cronjob -n ${OKTETO_NAMESPACE} wakeup-namespace-cronjob --ignore-not-found --wait
+  - kubectl delete cronjob -n ${OKTETO_WAKE_NAMESPACE} wakeup-namespace-cronjob-${OKTETO_USERNAME} --ignore-not-found --wait
   - envsubst < cronjob.yaml | kubectl apply -f -
 
 
