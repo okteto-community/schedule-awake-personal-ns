@@ -1,17 +1,19 @@
 # Schedule Awake Personal Namespace
 
-- Create a Namespace for this app to be run on (IT HAS TO BE A DIFFERENT AS YOUR PERSONAL NAMESPACE)
+
+## Admin Steps
+
+- Create a Namespace where all the developers jobs are going to run
 
 ```bash
-okteto namespace create <<NEW_NAMESPACE>>
+okteto namespace create <<wakeup-ns-sample>>
 ```
 
-- Choose when do you want to wake your personal namespace and run the app with Okteto
+- Mark the Namespace as "Keep Awake" in the UI Admin Panel -> Namespaces
 
-```bash
-okteto deploy --var HOURS=<<8>>
-```
+- Create Catalog with Env Variable "OKTETO_WAKE_NAMESPACE=wakeup-ns-sample"
 
-# Recommendations
+## Developer Steps
 
-Create a Catalog in Okteto UI with the variable HOURS and run it from the UI
+- Run Catalog created by Admin 
+- Choose number of hours to wake your personal Namespace
