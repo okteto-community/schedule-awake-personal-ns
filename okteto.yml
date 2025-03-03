@@ -1,0 +1,11 @@
+build: 
+  wake: 
+    context: .
+    dockerfile: Dockerfile
+
+deploy: 
+  commands: 
+  - kubectl delete cronjob -n ${OKTETO_NAMESPACE} wakeup-namespace-cronjob --ignore-not-found --wait
+  - envsubst < cronjob.yaml | kubectl apply -f -
+
+

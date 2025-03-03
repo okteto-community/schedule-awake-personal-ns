@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: wakeup-namespace-cronjob
+  namespace: "${OKTETO_NAMESPACE}"
+spec:
+  schedule: "0 */${HOURS} * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  startingDeadlineSeconds: 60
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: example
+            image: ${OKTETO_BUILD_WAKE_IMAGE}
+            env:
+              - name: HOURS
+                value: "{{HOURS}}"
+              - name: OKTETO_NAMESPACE
+                value: "{{OKTETO_NAMESPACE}}"
+              - name: OKTETO_TOKEN
+                value: "${OKTETO_TOKEN}"
+              - name: OKTETO_CONTEXT
+                value: "${OKTETO_CONTEXT}"
+              - name: OKTETO_USERNAME
+                value: "${OKTETO_USERNAME}"
+            command:
+              - /bin/sh
+              - -c
+              - |
+                echo "Starting namespace wake up for: $OKTETO_USERNAME ";
+                okteto context use $OKTETO_CONTEXT --token $OKTETO_TOKEN --namespace $OKTETO_NAMESPACE
+                okteto namespace wake $OKTETO_USERNAME;
+                kubectl patch cronjob -n $OKTETO_NAMESPACE wakeup-namespace-cronjob -p '{"spec":{"suspend":true}}'
+
