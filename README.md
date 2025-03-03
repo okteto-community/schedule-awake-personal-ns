@@ -9,7 +9,7 @@ okteto namespace create <<NEW_NAMESPACE>>
 - Choose when do you want to wake your personal namespace and run the app with Okteto
 
 ```bash
-okteto deploy --var HOURS=<<8h>>
+okteto deploy --var HOURS=<<8>>
 ```
 
 # Recommendations
